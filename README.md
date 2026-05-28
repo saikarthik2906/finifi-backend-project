@@ -1,40 +1,26 @@
-# Finifi Backend Developer Project
+# 🔍 Finifi Three-Way Match Engine
 
-## Three-Way Match Engine for PO, GRN, and Invoice
+An AI-powered backend system for intelligent **Purchase Order (PO)**, **Goods Receipt Note (GRN)**, and **Invoice** verification using **Node.js, MongoDB, and Gemini API**.
 
-## Project Overview
-
-This project is a backend service built using Node.js, Express.js, MongoDB, and Gemini API.
-
-The system allows users to:
-
-* Upload Purchase Order (PO), Goods Receipt Note (GRN), and Invoice PDFs
-* Extract text from uploaded PDFs
-* Parse structured JSON using Gemini API
-* Store parsed documents in MongoDB
-* Perform three-way matching between PO, GRN, and Invoice documents
-* Support out-of-order document uploads
-
-The system supports out-of-order uploads by storing PO, GRN, and Invoice documents independently and triggering matching whenever related documents become available.
+The application extracts data from uploaded PDFs, converts unstructured text into structured JSON using AI, stores documents in MongoDB, and performs automated **three-way matching validation** with support for out-of-order uploads.
 
 ---
 
-# Tech Stack
+## 🛠 Tech Stack
 
-* Node.js
-* Express.js
-* MongoDB Atlas
-* Mongoose
-* Gemini API
-* Multer
-* pdf-parse
-* dotenv
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge\&logo=nodedotjs\&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge\&logo=express\&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=for-the-badge\&logo=mongodb\&logoColor=white)
+![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge)
+![Gemini API](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge\&logo=google\&logoColor=white)
+![Multer](https://img.shields.io/badge/Multer-FF9800?style=for-the-badge)
+![PDF Parse](https://img.shields.io/badge/pdf--parse-PDF-red?style=for-the-badge)
 
 ---
 
-# Folder Structure
+## 📁 Project Structure
 
-```bash
+```bash id="m2g7qp"
 src/
  ├── config/
  │    └── db.js
@@ -60,94 +46,105 @@ src/
 
 ---
 
-# Features
+## 🚀 Features
 
-## 1. Upload Documents
+## 📤 Document Upload System
 
 Users can upload:
 
-* Purchase Orders
-* GRNs
+* Purchase Orders (PO)
+* Goods Receipt Notes (GRN)
 * Invoices
 
-Supported upload order:
+### ✅ Supported Upload Flow
 
 * PO first
 * GRN first
 * Invoice first
-* Any order
+* Any upload order
+
+The system automatically triggers matching whenever related documents become available.
 
 ---
 
-## 2. PDF Text Extraction
+## 📄 PDF Text Extraction
 
-Uploaded PDF files are parsed using `pdf-parse`.
+Uploaded PDF documents are processed using:
 
-The extracted raw text is stored in MongoDB.
+```bash id="x9v2ha"
+pdf-parse
+```
 
----
+Features include:
 
-## 3. Gemini AI Parsing
-
-Gemini API is used to convert extracted PDF text into structured JSON.
-
-Extracted fields include:
-
-### PO
-
-* poNumber
-* poDate
-* vendorName
-* items[]
-
-### GRN
-
-* grnNumber
-* poNumber
-* grnDate
-* items[]
-
-### Invoice
-
-* invoiceNumber
-* poNumber
-* invoiceDate
-* items[]
+* Raw text extraction
+* Structured storage in MongoDB
+* Automated processing pipeline
 
 ---
 
-# Matching Logic
+## 🤖 Gemini AI Parsing
 
-The system performs three-way matching using:
+Gemini API converts extracted PDF text into structured JSON data.
 
-* PO
-* GRN
+### 📦 Extracted PO Fields
+
+* `poNumber`
+* `poDate`
+* `vendorName`
+* `items[]`
+
+### 📦 Extracted GRN Fields
+
+* `grnNumber`
+* `poNumber`
+* `grnDate`
+* `items[]`
+
+### 📦 Extracted Invoice Fields
+
+* `invoiceNumber`
+* `poNumber`
+* `invoiceDate`
+* `items[]`
+
+---
+
+## 🔄 Three-Way Matching Logic
+
+The engine performs validation between:
+
+* Purchase Order (PO)
+* Goods Receipt Note (GRN)
 * Invoice
 
-Matching is performed using:
+### 🔍 Matching Parameters
 
 * `poNumber`
 * Item quantities
+* Date validations
 
-## Validation Rules
+---
 
-### GRN Checks
+## ✅ Validation Rules
 
-* GRN quantity should not exceed PO quantity
+### 📦 GRN Validation
 
-### Invoice Checks
+* GRN quantity must not exceed PO quantity
 
-* Invoice quantity should not exceed total GRN quantity
-* Invoice quantity should not exceed PO quantity
+### 🧾 Invoice Validation
+
+* Invoice quantity must not exceed GRN quantity
+* Invoice quantity must not exceed PO quantity
 * Invoice date should not be after PO date
 
 ---
 
-# Match Status
+## 📊 Match Status Responses
 
-The API returns one of the following:
+The API returns one of the following statuses:
 
-```json
+```json id="jlwmvf"
 matched
 partially_matched
 mismatch
@@ -156,13 +153,13 @@ insufficient_documents
 
 ---
 
-# APIs
+## 🌐 API Endpoints
 
-## 1. Upload Document
+## 1️⃣ Upload Document
 
 ### Endpoint
 
-```http
+```http id="v0avsn"
 POST /documents/upload
 ```
 
@@ -175,41 +172,41 @@ POST /documents/upload
 
 ### Example
 
-```txt
+```txt id="s2c8v4"
 po
 ```
 
 ---
 
-## 2. Get Parsed Document
+## 2️⃣ Get Parsed Document
 
 ### Endpoint
 
-```http
+```http id="5iz8m2"
 GET /documents/:id
 ```
 
 ---
 
-## 3. Get Match Result
+## 3️⃣ Get Match Result
 
 ### Endpoint
 
-```http
+```http id="c8az0d"
 GET /match/:poNumber
 ```
 
 ### Example
 
-```http
+```http id="b9bq0s"
 GET /match/TEMP_PO_NUMBER
 ```
 
 ---
 
-# MongoDB Schema
+## 🗄 MongoDB Schema
 
-```js
+```js id="h9pq6k"
 {
   documentType,
   poNumber,
@@ -221,67 +218,88 @@ GET /match/TEMP_PO_NUMBER
 
 ---
 
-# How to Run Locally
+## ⚙️ How to Run Locally
 
-## 1. Clone Repository
+### 1️⃣ Clone Repository
 
-```bash
+```bash id="cwk1cl"
 git clone <repo_url>
 ```
 
-## 2. Install Dependencies
+---
 
-```bash
+### 2️⃣ Install Dependencies
+
+```bash id="n70ql5"
 npm install
 ```
 
-## 3. Create .env File
+---
 
-```env
+### 3️⃣ Configure Environment Variables
+
+Create a `.env` file:
+
+```env id="4jqbxe"
 GEMINI_API_KEY=your_api_key
+MONGODB_URI=your_mongodb_uri
+PORT=5000
 ```
 
-## 4. Start Server
+---
 
-```bash
+### 4️⃣ Start Server
+
+```bash id="dg8edq"
 node src/server.js
 ```
 
 ---
 
-# Assumptions
+## 🧠 System Design Highlights
 
-* Each PO number has only one PO
+* AI-powered document parsing
+* Out-of-order upload handling
+* Automated matching triggers
+* Modular service architecture
+* MongoDB-based persistence
+* Scalable backend design
+
+---
+
+## ⚖️ Assumptions
+
+* Each PO number has one PO document
 * Multiple GRNs and Invoices can exist for the same PO
-* Item matching is based on quantity comparison
+* Item matching is quantity-based
 * PDFs contain readable text
 
 ---
 
-# Tradeoffs
+## 🔄 Tradeoffs
 
 * Gemini parsing depends on API quota availability
-* Current matching logic is simplified for assignment scope
-* Temporary fallback PO number is used if parsing fails
+* Matching logic simplified for assignment scope
+* Temporary fallback PO number used when parsing fails
 
 ---
 
-# Future Improvements
+## 💡 Future Improvements
 
-* Add frontend dashboard
-* Improve OCR support for scanned PDFs
-* Add authentication and authorization
-* Add queue-based async processing
-* Add retry mechanism for Gemini API failures
-* Improve item-level matching accuracy
-* Add Swagger/OpenAPI documentation
-* Deploy using Docker and Kubernetes
+* Frontend dashboard integration
+* OCR support for scanned PDFs
+* Authentication & authorization
+* Queue-based async processing
+* Retry handling for Gemini failures
+* Advanced item-level reconciliation
+* Swagger/OpenAPI documentation
+* Docker & Kubernetes deployment
 
 ---
 
-# Example Match Output
+## 📌 Example Match Output
 
-```json
+```json id="o4dy1n"
 {
   "status": "matched",
   "reasons": [],
@@ -291,6 +309,27 @@ node src/server.js
 
 ---
 
-# Author
+## 🎯 Purpose of the Project
 
-Sai Karthik
+This project demonstrates:
+
+* AI-assisted document processing
+* Intelligent backend workflows
+* Three-way financial reconciliation
+* PDF parsing pipelines
+* REST API architecture
+* Scalable Node.js backend design
+
+Perfect for:
+
+* Backend engineering assignments
+* FinTech demos
+* ERP workflow automation
+* AI document processing systems
+* Supply chain reconciliation prototypes
+
+---
+
+## 👨‍💻 Author
+
+**Sai Karthik**
